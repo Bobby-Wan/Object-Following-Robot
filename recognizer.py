@@ -1,10 +1,12 @@
 # from typing import ClassVar
 import cv2
-# import servo
+import servo
 
-webcam = cv2.VideoCapture(0)				# Get ready to start getting images from the webcam
-webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)		# I have found this to be about the highest-
-webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+webcam = cv2.VideoCapture(0)
+IMG_WIDTH = 320*2
+IMG_HEIGHT = 240*2				# Get ready to start getting images from the webcam
+webcam.set(cv2.CAP_PROP_FRAME_WIDTH, IMG_WIDTH)		# I have found this to be about the highest-
+webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, IMG_HEIGHT)
 
 frontalface = cv2.CascadeClassifier("haarcascade_frontalface_alt2.xml")		# frontal face pattern detection
 profileface = cv2.CascadeClassifier("haarcascade_profileface.xml")		# side face pattern detection
@@ -13,12 +15,16 @@ face = [0,0,0,0]	# This will hold the array that OpenCV returns when it finds a 
 Cface = [0,0]		# Center of the face: a point calculated from the above variable
 lastface = 0		# int 1-3 used to speed up detection. The script is looking for a right profile face,-
 
+(pan_servo, tilt_servo) = servo.initialize_servos()
+pan_config = servo.pan_config
+tilt_config = servo.tilt_config
+
 def show_cam():
     webcam = cv2.VideoCapture(0)
 
     while True:
         _, img = webcam.read()
-        cv2.imshow('my', img)
+        cv2.imshow('smile!', img)
         cv2.waitKey(1) 
     
 def detect_faces(frame, frontal=True ):
@@ -32,14 +38,36 @@ def draw_rect_around_faces(frame, faces):
         cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
 def recognize():
+    global pan_servo, pan_config, tilt_servo, tilt_config
+
     while True:
         _, frame = webcam.read()
 
         faces = detect_faces(frame)
-        # draw_rect_around_faces(frame, faces)
+        
         for (x,y,w,h) in faces:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        cv2.imshow('smile!', frame)
+
+        if not faces.empty():
+            (x,y,w,h) = faces[0]
+            face_center_point = [(w/2+x),(h/2+y)]
+            
+            width_diff = IMG_WIDTH - face_center_point[0]
+            while abs(width_diff) > 10:
+                #TODO think of a better way
+                angle_to_move = width_diff * 0.2
+                new_angle = pan_config.angle + angle_to_move
+                servo.move(pan_servo, pan_config, new_angle)
+
+            height_diff = IMG_HEIGHT - face_center_point[1]
+            while abs(height_diff) > 10:
+                #TODO think of a better way
+                angle_to_move = height_diff * 0.2
+                new_angle = pan_config.angle + angle_to_move
+                servo.move(tilt_servo, tilt_config, new_angle)
+
+
+        # cv2.imshow('smile!', frame)
         cv2.waitKey(1)
 
 def recognize2():
