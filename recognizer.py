@@ -48,7 +48,7 @@ def recognize():
         for (x,y,w,h) in faces:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
-        if not faces.empty():
+        if len(faces) != 0:
             (x,y,w,h) = faces[0]
             face_center_point = [(w/2+x),(h/2+y)]
             
