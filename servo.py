@@ -2,6 +2,12 @@ import RPi.GPIO as GPIO
 import time
 import random
 
+def angle_to_duty(angle, angle_range, duty_range, duty_min):
+	return angle/float(angle_range) * duty_range + duty_min
+
+def duty_to_angle(duty, duty_range, duty_min, angle_range):
+	return ((duty - duty_min)/duty_range) * angle_range
+	
 class ServoConfig:
 	def __init__(self, min_duty, max_duty, pin):
 		self.min_duty = min_duty
@@ -22,11 +28,7 @@ tilt_servo_max_duty = 10
 pan_config = ServoConfig(pin=pan_servo_pin, min_duty=pan_servo_min_duty, max_duty=pan_servo_max_duty)
 tilt_config = ServoConfig(pin=tilt_servo_pin, min_duty=tilt_servo_min_duty, max_duty=tilt_servo_max_duty)
 
-def angle_to_duty(angle, angle_range, duty_range, duty_min):
-	return angle/float(angle_range) * duty_range + duty_min
 
-def duty_to_angle(duty, duty_range, duty_min, angle_range):
-	return ((duty - duty_min)/duty_range) * angle_range
 
 def initialize_servos():
 	# global pan_servo_pin, tilt_servo_pin
