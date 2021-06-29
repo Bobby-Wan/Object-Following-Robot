@@ -2,41 +2,61 @@ import RPi.GPIO as GPIO
 import time
 import random
 
-servo_port_1 = 11
-servo_port_2 = 13
+class ServoConfig:
+	def __init__(self, min_duty, max_duty, pin):
+		self.min_duty = min_duty
+		self.max_duty = max_duty
+		self.pin = pin
+		self.duty_range = max_duty - min_duty
+		self.duty = min_duty + (self.duty_range)/2
+		self.angle = duty_to_angle(self.duty, self.duty_range, min_duty, 180)
 
-servo_1_min_duty = 2.5
-servo_1_max_duty = 10
-servo_2_min_duty = 2.5
-servo_2_max_duty = 11
+pan_servo_pin = 13
+pan_servo_min_duty = 2.5
+pan_servo_max_duty = 11
+
+tilt_servo_pin = 11
+tilt_servo_min_duty = 2.5
+tilt_servo_max_duty = 10
+
+pan_config = ServoConfig(pin=pan_servo_pin, min_duty=pan_servo_min_duty, max_duty=pan_servo_max_duty)
+tilt_config = ServoConfig(pin=tilt_servo_pin, min_duty=tilt_servo_min_duty, max_duty=tilt_servo_max_duty)
+
+def angle_to_duty(angle, angle_range, duty_range, duty_min):
+	return angle/float(angle_range) * duty_range + duty_min
+
+def duty_to_angle(duty, duty_range, duty_min, angle_range):
+	return ((duty - duty_min)/duty_range) * angle_range
 
 def initialize_servos():
-	global servo_port_1, servo_port_2
-	global servo1, servo2
+	# global pan_servo_pin, tilt_servo_pin
 
 	GPIO.setmode(GPIO.BOARD)
-	GPIO.setup(servo_port_1, GPIO.OUT)
-	GPIO.setup(servo_port_2, GPIO.OUT)
+	GPIO.setup(pan_config.pin, GPIO.OUT)
+	GPIO.setup(tilt_config.pin, GPIO.OUT)
 
-	servo1 = GPIO.PWM(servo_port_1, 50)
-	servo2 = GPIO.PWM(servo_port_2, 50)
+	pan_servo = GPIO.PWM(pan_config.pin, 50)
+	tilt_servo = GPIO.PWM(tilt_config.pin, 50)
 
-	return (servo1, servo2)
+	pan_servo.start(pan_config.duty)
+	tilt_servo.start(tilt_config.duty)
+
+	return (pan_servo, tilt_servo)
 
 def cleanup():
 	GPIO.cleanup()
 
 #from a 180-ish range of motion, where 0 is the middle
-def move_angle(servo, angle):
-	actual_angle = angle + 90
-	
-	#TODO fix this later, right now thos are magic numbers (s1 max - min), s1 min
-	duty = (actual_angle/180) * 8 + 2.5
+def move(servo, servo_config, angle):
+	range_of_motion = servo_config.max_duty - servo_config.min_duty
+
+	#calculate the actual duty needed for that angle
+	duty = angle_to_duty(angle, 180, servo_config.duty_range, servo_config.min_duty)
 	servo.ChangeDutyCycle(duty)
 
-def dance(servo):	
+#test function
+def dance(servo, servo_config):	
 	for i in range(1000):
 		angle = random.randint(0,180)
-		move_angle(servo, angle)
+		move(servo, servo_config, angle)
 		time.sleep(1)
-
