@@ -7,7 +7,7 @@ def angle_to_duty(angle, angle_range, duty_range, duty_min):
 
 def duty_to_angle(duty, duty_range, duty_min, angle_range):
 	return ((duty - duty_min)/duty_range) * angle_range
-	
+
 class ServoConfig:
 	def __init__(self, min_duty, max_duty, pin):
 		self.min_duty = min_duty
@@ -50,11 +50,12 @@ def cleanup():
 
 #from a 180-ish range of motion, where 0 is the middle
 def move(servo, servo_config, angle):
-	range_of_motion = servo_config.max_duty - servo_config.min_duty
-
 	#calculate the actual duty needed for that angle
 	duty = angle_to_duty(angle, 180, servo_config.duty_range, servo_config.min_duty)
-	servo.ChangeDutyCycle(duty)
+	if duty <= servo_config.max_duty:
+		servo.ChangeDutyCycle(duty)
+		servo_config.duty = duty
+		servo_config.angle = angle
 
 #test function
 def dance(servo, servo_config):	
@@ -62,3 +63,5 @@ def dance(servo, servo_config):
 		angle = random.randint(0,180)
 		move(servo, servo_config, angle)
 		time.sleep(1)
+
+#TODO def center_servo
