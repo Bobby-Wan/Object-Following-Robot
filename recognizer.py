@@ -57,16 +57,21 @@ def recognize():
                 #TODO think of a better way
                 angle_to_move = width_diff * 0.2
                 new_angle = pan_config.angle + angle_to_move
+                print('width angle: ', new_angle)
                 servo.move(pan_servo, pan_config, new_angle)
 
             height_diff = IMG_HEIGHT - face_center_point[1]
             while abs(height_diff) > 10:
                 #TODO think of a better way
                 angle_to_move = height_diff * 0.2
-                new_angle = pan_config.angle + angle_to_move
+                new_angle = tilt_config.angle + angle_to_move
+                print('height angle: ', new_angle)
                 servo.move(tilt_servo, tilt_config, new_angle)
-
-
+        else:
+            pan_middle = pan_config.min_duty + pan_config.duty_range/2
+            tilt_middle = tilt_config.min_duty + tilt_config.duty_range/2
+            servo.move(pan_servo, pan_config, servo.duty_to_angle(pan_middle))
+            servo.move(tilt_servo, tilt_config, servo.duty_to_angle(tilt_middle))
         # cv2.imshow('smile!', frame)
         cv2.waitKey(1)
 
