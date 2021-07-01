@@ -53,7 +53,7 @@ def recognize():
             face_center_point = [(w/2+x),(h/2+y)]
             
             width_diff = IMG_WIDTH - face_center_point[0]
-            while abs(width_diff) > 10:
+            if abs(width_diff) > 10:
                 #TODO think of a better way
                 angle_to_move = width_diff * 0.2
                 new_angle = pan_config.angle + angle_to_move
@@ -61,7 +61,7 @@ def recognize():
                 servo.move(pan_servo, pan_config, new_angle)
 
             height_diff = IMG_HEIGHT - face_center_point[1]
-            while abs(height_diff) > 10:
+            if abs(height_diff) > 10:
                 #TODO think of a better way
                 angle_to_move = height_diff * 0.2
                 new_angle = tilt_config.angle + angle_to_move
