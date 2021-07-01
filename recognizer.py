@@ -55,7 +55,7 @@ def recognize():
             width_diff = IMG_WIDTH/2 - face_center_point[0]
             if abs(width_diff) > 10:
                 #TODO think of a better way
-                angle_to_move = width_diff * 0.2
+                angle_to_move = width_diff * 0.05
                 new_angle = pan_config.angle + angle_to_move
                 print('old width angle: ', pan_config.angle)
                 print('width angle: ', new_angle)
