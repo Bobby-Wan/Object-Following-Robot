@@ -64,7 +64,7 @@ def recognize():
             height_diff = IMG_HEIGHT/2 - face_center_point[1]
             if abs(height_diff) > 10:
                 #TODO think of a better way
-                angle_to_move = height_diff * 0.01
+                angle_to_move = height_diff * 0.05
                 new_angle = tilt_config.angle + angle_to_move
                 print('old height angle: ', tilt_config.angle)
                 print('height angle: ', new_angle)
