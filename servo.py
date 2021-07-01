@@ -52,7 +52,7 @@ def cleanup():
 def move(servo, servo_config, angle):
 	#calculate the actual duty needed for that angle
 	duty = angle_to_duty(angle, 180, servo_config.duty_range, servo_config.min_duty)
-	if duty <= servo_config.max_duty:
+	if duty <= servo_config.max_duty and duty >= servo_config.min_duty:
 		servo.ChangeDutyCycle(duty)
 		servo_config.duty = duty
 		servo_config.angle = angle
