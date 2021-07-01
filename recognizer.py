@@ -56,7 +56,7 @@ def recognize():
             if abs(width_diff) > 10:
                 #TODO think of a better way
                 angle_to_move = width_diff * 0.2
-                new_angle = pan_config.angle - angle_to_move
+                new_angle = pan_config.angle + angle_to_move
                 print('old width angle: ', pan_config.angle)
                 print('width angle: ', new_angle)
                 servo.move(pan_servo, pan_config, new_angle)
@@ -65,7 +65,7 @@ def recognize():
             if abs(height_diff) > 10:
                 #TODO think of a better way
                 angle_to_move = height_diff * 0.01
-                new_angle = tilt_config.angle - angle_to_move
+                new_angle = tilt_config.angle + angle_to_move
                 print('old height angle: ', tilt_config.angle)
                 print('height angle: ', new_angle)
                 servo.move(tilt_servo, tilt_config, new_angle)
