@@ -70,8 +70,8 @@ def recognize():
         else:
             pan_middle = pan_config.min_duty + pan_config.duty_range/2
             tilt_middle = tilt_config.min_duty + tilt_config.duty_range/2
-            servo.move(pan_servo, pan_config, servo.duty_to_angle(pan_middle))
-            servo.move(tilt_servo, tilt_config, servo.duty_to_angle(tilt_middle))
+            servo.move(pan_servo, pan_config, servo.duty_to_angle(pan_middle, pan_config.duty_range, pan_config.min_duty, 180))
+            servo.move(tilt_servo, tilt_config, servo.duty_to_angle(tilt_middle, tilt_config.duty_range, tilt_config.min_duty, 180))
         # cv2.imshow('smile!', frame)
         cv2.waitKey(1)
 
