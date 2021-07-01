@@ -69,11 +69,14 @@ def recognize():
                 print('old height angle: ', tilt_config.angle)
                 print('height angle: ', new_angle)
                 servo.move(tilt_servo, tilt_config, new_angle)
-        else:
-            pan_middle = pan_config.min_duty + pan_config.duty_range/2
-            tilt_middle = tilt_config.min_duty + tilt_config.duty_range/2
-            servo.move(pan_servo, pan_config, servo.duty_to_angle(pan_middle, pan_config.duty_range, pan_config.min_duty, 180))
-            servo.move(tilt_servo, tilt_config, servo.duty_to_angle(tilt_middle, tilt_config.duty_range, tilt_config.min_duty, 180))
+        # else:
+            # pan_middle = pan_config.min_duty + pan_config.duty_range/2
+            # tilt_middle = tilt_config.min_duty + tilt_config.duty_range/2
+            # servo.move(pan_servo, pan_config, servo.duty_to_angle(pan_middle, pan_config.duty_range, pan_config.min_duty, 180))
+            # servo.move(tilt_servo, tilt_config, servo.duty_to_angle(tilt_middle, tilt_config.duty_range, tilt_config.min_duty, 180))
+            # servo.move(pan_servo, pan_config, pan_config.angle)
+
+
         # cv2.imshow('smile!', frame)
         cv2.waitKey(1)
 
