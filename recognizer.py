@@ -1,6 +1,7 @@
 # from typing import ClassVar
 import cv2
 import servo
+import time
 
 webcam = cv2.VideoCapture(0)
 IMG_WIDTH = 320*2
@@ -53,7 +54,7 @@ def recognize():
             face_center_point = [(w/2+x),(h/2+y)]
             print('face x:{}, y:{}'.format(face_center_point[0], face_center_point[1]))
             width_diff = IMG_WIDTH/2 - face_center_point[0]
-            if abs(width_diff) > 10:
+            if abs(width_diff) > 20:
                 #TODO think of a better way
                 angle_to_move = width_diff * 0.05
                 new_angle = pan_config.angle + angle_to_move
@@ -62,7 +63,7 @@ def recognize():
                 servo.move(pan_servo, pan_config, new_angle)
 
             height_diff = IMG_HEIGHT/2 - face_center_point[1]
-            if abs(height_diff) > 10:
+            if abs(height_diff) > 20:
                 #TODO think of a better way
                 angle_to_move = height_diff * 0.05
                 new_angle = tilt_config.angle + angle_to_move
@@ -76,8 +77,8 @@ def recognize():
             # servo.move(tilt_servo, tilt_config, servo.duty_to_angle(tilt_middle, tilt_config.duty_range, tilt_config.min_duty, 180))
             # servo.move(pan_servo, pan_config, pan_config.angle)
 
-
-        # cv2.imshow('smile!', frame)
+        #time.sleep(0.1)
+        #cv2.imshow('smile!', frame)
         cv2.waitKey(1)
 
 def recognize2():
