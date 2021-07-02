@@ -42,7 +42,7 @@ def recognize():
     global pan_servo, pan_config, tilt_servo, tilt_config
 
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-    video_writer = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+    video_writer = cv2.VideoWriter('./server/output.avi', fourcc, 20.0, (640, 480))
 
     while True:
         _, frame = webcam.read()

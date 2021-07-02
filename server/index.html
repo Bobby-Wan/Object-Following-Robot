@@ -17,9 +17,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-  <h1>Test title</h1>
+  <h1>Object Following Robot</h1>
+  <video src="./output.avi"></video>
   <p>Position: <span id="servoPos"></span></p>
   <input type="range" min="0" max="180" class="slider" id="servoSlider" onchange="servo(this.value)"/>
+
   <script>
     var slider = document.getElementById("servoSlider");
     var servoP = document.getElementById("servoPos");
