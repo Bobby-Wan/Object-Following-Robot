@@ -30,7 +30,7 @@ def show_cam():
     
 def detect_faces(frame):
     faces = frontalface.detectMultiScale(frame,1.3,4,(cv2.CASCADE_DO_CANNY_PRUNING + cv2.CASCADE_FIND_BIGGEST_OBJECT + cv2.CASCADE_DO_ROUGH_SEARCH),(60,60))
-    faces  += profileface.detectMultiScale(frame,1.3,4,(cv2.CASCADE_DO_CANNY_PRUNING + cv2.CASCADE_FIND_BIGGEST_OBJECT + cv2.CASCADE_DO_ROUGH_SEARCH),(60,60))
+    # faces  += profileface.detectMultiScale(frame,1.3,4,(cv2.CASCADE_DO_CANNY_PRUNING + cv2.CASCADE_FIND_BIGGEST_OBJECT + cv2.CASCADE_DO_ROUGH_SEARCH),(60,60))
     
     return faces
 
